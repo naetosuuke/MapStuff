@@ -125,6 +125,18 @@ class SearchCell: UITableViewCell {
         
     }
     
+    func animateButtonOut() {
+        directionsButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25) //サイズを変える　小さくする
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: { //0.5秒かけて、下記アニメーション
+            self.directionsButton.alpha = 0 //透過を消して表示
+            self.directionsButton.transform = CGAffineTransform(scaleX: 1.2, y: 1.2) //元のサイズの1.2倍まで大きくする
+        }) { (_) in //アニメーションが終わったらクロージャ起動
+            self.directionsButton.transform = .identity //元のサイズにもどす
+        }
+        
+    }
+    
     func configureCell() {
         locationTitleLabel.text = mapItem?.name
         

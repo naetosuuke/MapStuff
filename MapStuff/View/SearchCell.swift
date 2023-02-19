@@ -12,7 +12,7 @@ protocol SearchCellDelegate { //delegateメソッド　CLLocationがもつ現在
     func distanceFromUser(location: CLLocation) -> CLLocationDistance?
     func getDirections(forMapItem mapItem: MKMapItem)
 }
-
+    
 class SearchCell: UITableViewCell {
     
     // MARK: - Proerties
@@ -23,8 +23,12 @@ class SearchCell: UITableViewCell {
             configureCell()
         }
     }
-    
-    
+    var selectedMapItem: MKMapItem? {
+        didSet{
+            print("\(mapItem!.name) is selected in tableview")
+        }
+    }
+
     lazy var directionsButton: UIButton = { //goボタン　Viewの中にボタンを設定する場合、lazyをつけないとハンドラーが起動しない(selector)
         let button = UIButton(type: .system)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
@@ -107,8 +111,11 @@ class SearchCell: UITableViewCell {
     
     @objc func handleGetDirections() {
         print("pushed go")
-        guard let mapItem = self.mapItem else { return }
-        delegate?.getDirections(forMapItem: mapItem)
+        guard let selectedMapItem = self.selectedMapItem else {
+            
+            return
+        }
+        delegate?.getDirections(forMapItem: selectedMapItem)
     }
 
     // MARK: - Helper Function
@@ -122,19 +129,11 @@ class SearchCell: UITableViewCell {
         }) { (_) in //アニメーションが終わったらクロージャ起動
             self.directionsButton.transform = .identity //元のサイズにもどす
         }
-        
     }
     
-    func animateButtonOut() {
-        directionsButton.transform = CGAffineTransform(scaleX: 0.25, y: 0.25) //サイズを変える　小さくする
-        
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: { //0.5秒かけて、下記アニメーション
-            self.directionsButton.alpha = 0 //透過を消して表示
-            self.directionsButton.transform = CGAffineTransform(scaleX: 1.2, y: 1.2) //元のサイズの1.2倍まで大きくする
-        }) { (_) in //アニメーションが終わったらクロージャ起動
-            self.directionsButton.transform = .identity //元のサイズにもどす
-        }
-        
+    func removeGo() {
+        print("removeGo initialized..")
+        self.directionsButton.alpha = 0//透過を消して表示
     }
     
     func configureCell() {

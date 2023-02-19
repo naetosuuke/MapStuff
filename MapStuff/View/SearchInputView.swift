@@ -30,9 +30,10 @@ class SearchInputView: UIView {
     var searchBar: UISearchBar!
     var tableView: UITableView!
     var expansionState: ExpansionState!
+    var selectedCell: SearchCell!
+    
     var delegate: SearchInputViewDelegate?
     var mapController: MapController?
-    
     var directionsEnabled = false
     
     
@@ -243,7 +244,7 @@ extension SearchInputView: UITableViewDelegate, UITableViewDataSource { //TableV
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {//選択した時の関数
         
         guard var searchResults = searchResults else { return }
-        let selectedMapItem = searchResults[indexPath.row]
+        let selectedMapItem = searchResults[indexPath.row] //選択したものを変数に入れる
         delegate?.selectedAnnotation(withMapItem: selectedMapItem) //Annotation
         
         //FIXME: Refacter
@@ -252,7 +253,7 @@ extension SearchInputView: UITableViewDelegate, UITableViewDataSource { //TableV
             self.searchBar.endEditing(true)
             self.searchBar.showsCancelButton = false
             animateInputView(targetPosition: self.frame.origin.y + 460) {(_) in
-                self.delegate?.animateCenterMapButton(expansionState: self.expansionState, hideButton: false)  //ボタン動かす（隠さない）
+                self.delegate?.animateCenterMapButton(expansionState: self.expansionState, hideButton: true)  //ボタン動かす（隠さない）
                 self.expansionState = .PartiallyExpanded
                 }
         }
@@ -262,7 +263,15 @@ extension SearchInputView: UITableViewDelegate, UITableViewDataSource { //TableV
         
         let firstIndexPath = IndexPath(row: 0, section: 0) //テーブル一番上のセルを指定するため一番上にIndexPathを宣言
         let cell = tableView.cellForRow(at:firstIndexPath) as! SearchCell //一番上のセルを変数cellに代入　このときSearchCell型にキャストし、カスタムセルにする
+
+        //FIXME: GOボタン削除
+        if let previousCell = self.selectedCell{ //前回選択したセルが存在していたら
+            previousCell.removeGo() //goを削除する
+        }
+        
+        self.selectedCell = cell
         cell.animateButtonIn() //cell カスタムセルの型を持つので、メンバー式からアニメーションを呼び出す
+        cell.selectedMapItem = selectedMapItem // 選択されたセルのMapItemをSearchCellクラスに渡す
         
         delegate?.addPolyline(forDestinationMapItem: selectedMapItem) //polyLineを引く
     }

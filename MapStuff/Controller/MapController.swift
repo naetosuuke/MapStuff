@@ -9,6 +9,7 @@ import UIKit
 import MapKit
 import CoreLocation
 
+
 class MapController: UIViewController {
     
     // MARK: - Properties
@@ -64,6 +65,7 @@ class MapController: UIViewController {
             self.removeOverlaysButton.alpha = 0
             self.centerMapButton.alpha = 1
         }
+        
         if mapView.overlays.count > 0 { //経路が1以上ある時
             self.mapView.removeOverlay(mapView.overlays[0]) //経路を削除
             centerMapOnUserLocation(shouldLoadAnnotaitons: false)
@@ -177,11 +179,14 @@ extension MapController: SearchInputViewDelegate {
             }
             
         case .FullyExpanded:
-            UIView.animate(withDuration: 0.25) {
-                self.centerMapButton.alpha = 1
+            if !hideButton {
+                UIView.animate(withDuration: 0.25) {
+                    self.centerMapButton.alpha = 1
+                }
             }
         }
     }
+        
 }
 
 extension MapController: MKMapViewDelegate { //

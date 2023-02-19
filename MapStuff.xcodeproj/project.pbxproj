@@ -68,7 +68,6 @@
 				50C4DE7D2997AF270045B0AB /* Assets.xcassets */,
 				50C4DE742997AF260045B0AB /* AppDelegate.swift */,
 				50C4DE762997AF260045B0AB /* SceneDelegate.swift */,
-				50C4DE95299D22250045B0AB /* SearchCell.swift */,
 				50C4DE7F2997AF270045B0AB /* LaunchScreen.storyboard */,
 				50C4DE822997AF270045B0AB /* Info.plist */,
 			);
@@ -86,6 +85,7 @@
 		50C4DE91299D16500045B0AB /* View */ = {
 			isa = PBXGroup;
 			children = (
+				50C4DE95299D22250045B0AB /* SearchCell.swift */,
 				50C4DE93299D16A90045B0AB /* SearchInputView.swift */,
 			);
 			path = View;

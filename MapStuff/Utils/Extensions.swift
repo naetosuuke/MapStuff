@@ -32,14 +32,25 @@ extension UIColor {
 
 
 extension UIView {
-
-    func centerX(inView view: UIView) { //中心座標を取得する
+    
+    func center(inView view: UIView) { //cellに使う
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant:0).isActive = true
+        self.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant:0).isActive = true
+    }
+    
+    func centerX(inView view: UIView) { //中心X座標を取得する
         self.translatesAutoresizingMaskIntoConstraints = false //trueだとAutoresizingMaskでレイアウト構成、falseだとAutoLayoutでレイタウトを構成　IB 使う時は強制的にFalse
         self.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant:0).isActive = true //CenterXAnchorの制約を有効
         //https://stackoverflow.com/questions/40739345/centering-uilabel-not-working
     }
-    
-    
+
+    func centerY(inView view: UIView) { //中心Y座標を取得する
+        self.translatesAutoresizingMaskIntoConstraints = false //trueだとAutoresizingMaskでレイアウト構成、falseだとAutoLayoutでレイタウトを構成　IB 使う時は強制的にFalse
+        self.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant:0).isActive = true //CenterXAnchorの制約を有効
+        //https://stackoverflow.com/questions/40739345/centering-uilabel-not-working
+    }
+
     
     //ビューを全面に拡張する
     func addConstraintsToFillView(view: UIView) {
